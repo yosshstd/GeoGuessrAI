@@ -1,0 +1,13 @@
+train:
+  epochs: 50
+  patience: 10
+  optimizer: AdamW
+  vit_lr: 2.0e-05
+  head_lr: 0.001
+  weight_decay: 0.1
+
+data:
+  dataset_dir: ./data/coord_images
+  model_name: wkcn/TinyCLIP-ViT-39M-16-Text-19M-YFCC15M
+  batch_size: 128
+  augment: True
