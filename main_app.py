@@ -26,7 +26,7 @@ def main():
     def load_model():
         config = OmegaConf.load('config.yaml')
         model = lightning_model.BaseModel(config)
-        state_dict = torch.hub.load_state_dict_from_url(const.MODEL_URL, map_location=torch.device('cuda'))
+        state_dict = torch.hub.load_state_dict_from_url(const.MODEL_URL, map_location=torch.device('cpu'))
         model.load_state_dict(state_dict)
 
         processor = CLIPImageProcessor.from_pretrained(config.data.model_name)
