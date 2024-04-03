@@ -9,3 +9,4 @@ streamlit==1.32.0
 reverse-geocoder==1.5.1
 pycountry==23.12.11
 omegaconf==2.3.0
+st-img-pastebutton==0.0.3
