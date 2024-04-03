@@ -1,0 +1,11 @@
+torch==2.1.0
+torchvision==0.16.0
+transformers==4.36.1
+pytorch-lightning==2.2.1
+pillow==10.1.0
+numpy==1.26.2
+pandas==2.2.1
+streamlit==1.32.0
+reverse-geocoder==1.5.1
+pycountry==23.12.11
+omegaconf==2.3.0

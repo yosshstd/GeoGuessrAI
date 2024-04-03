@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import Callback
 
-from transformers import CLIPImageProcessor, CLIPVisionModelWithProjection, CLIPTextModelWithProjection, AutoTokenizer
+from transformers import CLIPVisionModelWithProjection
 
 
 class BaseModel(pl.LightningModule):

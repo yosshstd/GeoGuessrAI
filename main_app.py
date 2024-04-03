@@ -1,4 +1,5 @@
 import const
+from src import lightning_model
 
 import time
 from omegaconf import OmegaConf
@@ -8,11 +9,11 @@ st.markdown(const.HIDE_ST_STYLE, unsafe_allow_html=True)
 from PIL import Image
 import numpy as np
 import pandas as pd
-
 import glob
 import torch
 from transformers import CLIPImageProcessor
-from src import lightning_model
+import reverse_geocoder as rg
+import pycountry
 
 
 
@@ -34,6 +35,7 @@ def main():
     
 
     # Load test image (jgp)
+    @st.cache_resource
     def scan_image_path():
         paths = []
         true_coords = []
@@ -42,8 +44,27 @@ def main():
             coord_list = path.split("/")[-1].split(",")
             lat, lon = [float(coord_list[0]), float(coord_list[1][:-4])]
             true_coords.append((lat, lon))
-        return paths, true_coords
-    paths, true_coords = scan_image_path()
+        
+        true_results = rg.search(true_coords)
+        return paths, true_coords, true_results
+    paths, true_coords, true_results = scan_image_path()
+
+    
+    def get_country_name(country_code):
+        try:
+            country = pycountry.countries.get(alpha_2=country_code)
+            return country.name
+        except AttributeError:
+            return "Unknown"
+        
+    def harversine(lat1, lon1, lat2, lon2):
+        R = 6371.0
+        lat1, lon1, lat2, lon2 = map(np.radians, [lat1, lon1, lat2, lon2])
+        dlat = lat2 - lat1
+        dlon = lon2 - lon1
+        a = np.sin(dlat/2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2)**2
+        c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1-a))
+        return R * c
 
     ''''''
     
@@ -77,8 +98,9 @@ def main():
             st.image(image_data, caption='Uploaded image', use_column_width=True)
             image_data = processor(image_data, return_tensors="pt")['pixel_values']
             with torch.no_grad():
-                coord = model(image_data).squeeze().cpu().numpy()
+                pred_coord = model(image_data).squeeze().cpu().numpy()
             
+            pred_results = rg.search(pred_coord.tolist())
             if img_source == 'Sample':
                 col1, col2 = st.columns([1, 2])
                 col1.button('Next Street View Image', help='Click to see another sample image.')
@@ -88,16 +110,16 @@ def main():
 
     else:
         st.info('Please upload an image.')
-        coord = None
+        pred_coord = None
 
 
     
     # Display the result
     st.subheader('Result')
-    if coord is not None:
-        st.write(f'Predicted: {coord[0]:.4f}, {coord[1]:.4f}')
-        st.write(f'True: {true_coords[id][0]:.4f}, {true_coords[id][1]:.4f}')
-        st.map(pd.DataFrame({'lat': [coord[0], true_coords[id][0]], 'lon': [coord[1], true_coords[id][1]]}))
+    if pred_coord is not None:
+        st.write(f'Predicted Location: ({pred_coord[0]:.2f}, {pred_coord[1]:.2f}) --- {pred_results[0]["name"]}, {pred_results[0]["admin1"]}, {get_country_name(pred_results[0]["cc"])}')
+        st.write(f'True Location: ({true_coords[id][0]:.2f}, {true_coords[id][1]:.2f}) --- {true_results[id]["name"]}, {true_results[id]["admin1"]}, {get_country_name(true_results[id]["cc"])}')
+        st.map(pd.DataFrame({'lat': [pred_coord[0], true_coords[id][0]], 'lon': [pred_coord[1], true_coords[id][1]], 'type': ['Predicted', 'True'], 'color': ['#008000', '#0044ff']}), size=1000, zoom=1, color='color')
     else:
         st.write('No image uploaded.')
     
@@ -110,6 +132,10 @@ def main():
         unsafe_allow_html=True
     )
     st.markdown('<br>', unsafe_allow_html=True)
+
+
+
+
 
 
 if __name__ == '__main__':
