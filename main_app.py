@@ -110,9 +110,9 @@ def main():
             if img_source == 'Sample':
                 col1, col2 = st.columns([1, 2])
                 col1.button('Next Street View Image', help='Click to see another sample image.')
-                col2.success(f'Inference Time: {time.time()-start_time:.2f} [sec]')
+                col2.success(f'Inference Time (cpu): {time.time()-start_time:.2f} [sec]')
             else:
-                st.success(f'Inference Time: {time.time()-start_time:.2f} [sec]')
+                st.success(f'Inference Time (cpu): {time.time()-start_time:.2f} [sec]')
 
     else:
         st.info('Please upload an image.')
