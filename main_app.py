@@ -85,7 +85,7 @@ def main():
         try:
             header, encoded = pasted_img.split(",", 1)
             binary_data = base64.b64decode(encoded)
-            image_data = BytesIO(binary_data)
+            image_data = Image.open(BytesIO(binary_data))
         except:
             image_data = None
     elif img_source == 'Upload':
