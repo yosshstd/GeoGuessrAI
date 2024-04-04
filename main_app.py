@@ -73,7 +73,7 @@ def main():
     ''''''
     
     #col1, col2 = st.columns([1, 1])
-    img_source = st.radio('Image Source', ('Sample', 'Paste', 'Upload', 'None'), help='You can paste a street view image from clipboard or upload an image from your local machine.')
+    img_source = st.radio('Image Source', ('Sample', 'Paste', 'Upload'), help='You can paste a street view image from clipboard or upload an image from your local machine.')
     if img_source == 'Sample':
         try:
             id = np.random.randint(0, len(paths))
