@@ -5,8 +5,8 @@ pytorch-lightning==2.2.1
 pillow==10.1.0
 numpy==1.26.2
 pandas==2.2.1
-streamlit==1.32.0
 reverse-geocoder==1.5.1
 pycountry==23.12.11
 omegaconf==2.3.0
+streamlit==1.32.0
 st-img-pastebutton==0.0.3

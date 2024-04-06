@@ -38,7 +38,7 @@ def main():
     model, processor = load_model()
     
 
-    # Load test image (jgp)
+    # Load test image (jpg)
     @st.cache_resource
     def scan_image_path():
         paths = []
