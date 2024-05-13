@@ -123,9 +123,9 @@ def main():
     # Display the result
     st.subheader('Result')
     if pred_coord is not None:
-        st.write(f'Predicted Location: ({pred_coord[0]:.2f}, {pred_coord[1]:.2f}) --- {pred_results[0]["name"]}, {pred_results[0]["admin1"]}, {get_country_name(pred_results[0]["cc"])}')
+        st.write(f'Predicted Location: ({pred_coord[0]:.2f}, {pred_coord[1]:.2f}) --- {pred_results[0]["name"]}, {pred_results[0]["admin1"]}, {get_country_name(pred_results[0]["cc"])} (Green)')
         if img_source == 'Sample':
-            st.write(f'True Location: ({true_coords[id][0]:.2f}, {true_coords[id][1]:.2f}) --- {true_results[id]["name"]}, {true_results[id]["admin1"]}, {get_country_name(true_results[id]["cc"])}')
+            st.write(f'True Location: ({true_coords[id][0]:.2f}, {true_coords[id][1]:.2f}) --- {true_results[id]["name"]}, {true_results[id]["admin1"]}, {get_country_name(true_results[id]["cc"])} (Blue)')
             st.map(pd.DataFrame({'lat': [pred_coord[0], true_coords[id][0]], 'lon': [pred_coord[1], true_coords[id][1]], 'type': ['Predicted', 'True'], 'color': ['#008000', '#0044ff']}), size=1000, zoom=1, color='color')
         else:
             st.map(pd.DataFrame({'lat': [pred_coord[0]], 'lon': [pred_coord[1]], 'type': ['Predicted'], 'color': ['#008000']}), size=1000, zoom=1, color='color')

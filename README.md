@@ -60,7 +60,7 @@ data:
   augment: True
 ```
 
-You can download the fine-tuned model [here](https://huggingface.co/yosshstd/GeoGuessrAI).
+You can download the fine-tuned model [here](https://huggingface.co/yosshstd/GeoGuessrAI/tree/main).
 
 ## ⏳️ Inference
 
@@ -73,7 +73,7 @@ You can download the fine-tuned model [here](https://huggingface.co/yosshstd/Geo
 ### Output: Predicted coordinates & location (using reverse geocoding)
 
 <p align="center">
-  <img src="results.JPG" alt="probs">
+  <img src="result.jpg" alt="probs" width="65%" height="65%">
 </p>
 
 ## 📝 Refferences
